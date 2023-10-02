@@ -49,25 +49,47 @@ class Program
 			Console.WriteLine($"{i + 1}. {rates[i]}");
 		}
 		int convertIn = int.Parse(Console.ReadLine());
-
-		Console.WriteLine("Введіть суму:");
-		int convertSum = int.Parse(Console.ReadLine());
-
-		if (convertIn == 1)
+		if (convertIn == 1 || convertIn == 2 || convertIn == 3)
 		{
-			Console.WriteLine("Введіть курс вихідних даних:");
+			Console.WriteLine("Введіть суму:");
+			int convertSum = int.Parse(Console.ReadLine());
 
-			for (int i = 1; i < rates.Count; i++)
+			if (convertSum <= 0)
 			{
-				Console.WriteLine($"{i}. {rates[i]}");
+				Console.WriteLine("Помилка: некоректна сума");
+				return;
 			}
-			int convertOut = int.Parse(Console.ReadLine());
-			Console.WriteLine($"{convertSum} грн = {converter.convertFromUAH(convertSum, convertOut)} {rates[convertOut]}");
+
+			if (convertIn == 1)
+			{
+				Console.WriteLine("Введіть курс вихідних даних:");
+
+				for (int i = 1; i < rates.Count; i++)
+				{
+					Console.WriteLine($"{i}. {rates[i]}");
+				}
+				int convertOut = int.Parse(Console.ReadLine());
+				if (convertOut == 1 || convertOut == 2)
+				{
+					Console.WriteLine($"{convertSum} грн = {converter.convertFromUAH(convertSum, convertOut)} {rates[convertOut]}");
+				}
+				else
+				{
+					Console.WriteLine("Помилка: некоректна команда");
+					return;
+				}
+			}
+			else 
+			{
+
+				decimal outputSum = (convertIn == 2) ? converter.convertFromUSD(convertSum) : converter.convertFromEURO(convertSum);
+				Console.WriteLine($"{convertSum} {rates[convertIn - 1]} = {outputSum} грн");
+			}
 		}
-		else 
+		else
 		{
-			decimal outputSum = (convertIn == 2) ? converter.convertFromUSD(convertSum) : converter.convertFromEURO(convertSum);
-			Console.WriteLine($"{convertSum} {rates[convertIn - 1]} = {outputSum} грн");
+			Console.WriteLine("Помилка: некоректна команда");
+			return;
 		}
 	}
 }
